@@ -1,0 +1,189 @@
+/* App.css */
+
+/* Global Layout & Reset */
+.mindmap-page-layout {
+    display: flex;
+    min-height: 100vh;
+    background-color: #f8fafc; /* Tailwind bg-slate-50 */
+    font-family: 'Inter', sans-serif;
+}
+
+/* Main Content Area (Canvas Wrapper) */
+.mindmap-content {
+    flex-grow: 1;
+    padding: 2rem;
+    overflow-y: auto;
+    transition: margin-right 0.3s ease-in-out;
+    margin-right: 0; /* Default: no margin */
+}
+
+.mindmap-content.has-drawer-open {
+    margin-right: 400px; /* Space for the open drawer */
+}
+
+.mindmap-canvas-container {
+    height: calc(100vh - 4rem);
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+.react-flow-wrapper {
+    width: 100%;
+    height: 100%;
+    border: 1px solid #e2e8f0; /* Tailwind border-gray-200 */
+    border-radius: 0.75rem;
+    background-color: #ffffff;
+    position: relative;
+    overflow: auto; 
+}
+
+/* React Flow Simulation Styles - CANVAS BACKGROUND */
+.react-flow__canvas {
+    position: relative;
+    /* Ensure minimum size to accommodate the 1200px centered layout and enable scroll */
+    min-width: 1200px; 
+    min-height: 100%; 
+    
+    background-color: #f7f7f7; 
+    background-image: radial-gradient(#e0e0e0 1px, transparent 0);
+    background-size: 25px 25px;
+    background-position: -1px -1px;
+}
+
+/* Page Node Styles (The box in the flow) */
+.page-node.flow-node-style {
+    position: absolute;
+    width: 300px;
+    height: 60px;
+    padding: 0.5rem 1rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: #ffffff;
+    border: 1px solid #e2e8f0;
+    border-radius: 0.5rem;
+    cursor: pointer;
+    text-align: center;
+    transition: all 0.2s ease-in-out;
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -2px rgba(0, 0, 0, 0.06);
+    z-index: 10;
+}
+
+.page-node.flow-node-style:hover {
+    box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -4px rgba(0, 0, 0, 0.1);
+}
+
+.page-node.flow-node-style.selected {
+    border: 3px solid #4f46e5; /* Tailwind indigo-600 */
+    background-color: #e0e7ff; /* Tailwind indigo-100 */
+    box-shadow: 0 0 0 4px rgba(79, 70, 229, 0.3); /* Custom ring style */
+}
+
+/* Edge Simulation Styles */
+.flow-edge-style {
+    position: absolute;
+    width: 2px;
+    left: 0;
+    z-index: 5;
+    pointer-events: none;
+}
+
+.edge-line {
+    width: 100%;
+    /* Line takes up height minus arrow size to leave space for the triangle */
+    height: calc(100% - 10px); 
+    background-color: #4f46e5; /* Tailwind indigo-600 */
+    position: relative;
+}
+
+/* Arrowhead Style (using ::after pseudo-element) */
+.edge-line::after {
+    content: '';
+    position: absolute;
+    /* Position the triangle right at the end of the line element */
+    bottom: -10px; 
+    left: 50%;
+    transform: translateX(-50%);
+    width: 0;
+    height: 0;
+    border-left: 8px solid transparent;
+    border-right: 8px solid transparent;
+    border-top: 10px solid #4f46e5; /* The arrow triangle */
+    box-sizing: content-box;
+    z-index: 10;
+}
+
+.edge-label-simulated {
+    position: absolute;
+    left: 50%;
+    transform: translate(-50%, -50%); /* Center horizontally and vertically */
+    padding: 0.25rem 0.5rem;
+    background-color: #fff;
+    border: 1px solid #c7d2fe; /* Tailwind indigo-200 */
+    border-radius: 9999px;
+    font-size: 0.75rem;
+    color: #4338ca; /* Tailwind indigo-700 */
+    font-weight: 600;
+    white-space: nowrap;
+    z-index: 15;
+}
+
+/* Details Drawer Styles */
+.details-drawer {
+    width: 0;
+    position: fixed;
+    top: 0;
+    right: 0;
+    height: 100vh;
+    background: #ffffff;
+    box-shadow: -6px 0 16px rgba(0, 0, 0, 0.15);
+    transition: width 0.3s ease-in-out;
+    overflow-y: hidden;
+    z-index: 50;
+}
+
+.details-drawer.open {
+    width: 400px;
+    overflow-y: auto;
+}
+
+/* Media Queries for Responsiveness */
+@media (max-width: 1024px) {
+    .details-drawer.open {
+        width: 320px;
+    }
+    .mindmap-content.has-drawer-open {
+        margin-right: 320px;
+    }
+}
+
+@media (max-width: 768px) {
+    .details-drawer {
+        width: 0;
+    }
+    .details-drawer.open {
+        width: 100%;
+    }
+    .mindmap-content.has-drawer-open {
+        margin-right: 0; /* Full width canvas on mobile, drawer overlays */
+    }
+}
+
+/* Loading State styles */
+.loading-state {
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+.error-state {
+    padding: 20px;
+    margin: 40px;
+    text-align: center;
+    font-size: 1.25rem;
+    color: #dc2626; /* red-600 */
+    background-color: #fef2f2; /* red-50 */
+    border: 1px solid #fca5a5; /* red-300 */
+    border-radius: 0.5rem;
+}
